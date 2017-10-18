@@ -31,31 +31,29 @@ def strechArms(robotIP):
     postureProxy.goToPosture("StandInit", 0.5)
 
     # Move with left hand
-    # Parallel hand
-    JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll"]
+    JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw"]
     # Predpazenie
-    Arm1 = [0,  30, 0, -10]
+    Arm1 = [-10,  0, 0, -10, 0]
     Arm1 = [ x * motion.TO_RAD for x in Arm1]
     # Rozpazenie
-    Arm2 = [75,  30, 0, -10]
-    Arm2 = [ x * motion.TO_RAD for x in Arm2]
+    Arm2 = [-70,  70, -45, -10, -75]
+    Arm2 = [ x * motion.TO_RAD for x in Arm1]
 
-    pFractionMaxSpeed = 0.8
+    pFractionMaxSpeed = 0.5
 
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
 
     # Move with right hand
-    # Parallel hand
-    JointNames = ["RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll"]
+    JointNames = ["RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw"]
     # Predpazenie
-    Arm1 = [0,  -30, 0, 10]
+    Arm1 = [-10,  0, 0, 10, 0]
     Arm1 = [ x * motion.TO_RAD for x in Arm1]
     # Rozpazenie
-    Arm2 = [75,  -30, 0, 10]
+    Arm2 = [-10,  70, 45, 10, 75]
     Arm2 = [ x * motion.TO_RAD for x in Arm2]
 
-    pFractionMaxSpeed = 0.8
+    pFractionMaxSpeed = 0.5
 
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)

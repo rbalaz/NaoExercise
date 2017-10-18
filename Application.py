@@ -1,4 +1,8 @@
-from naoqi import ALProxy;
+from naoqi import ALProxy
+from MoveArms import armsUpAndDown
+from StretchArms import strechArms
+from ExerciseThree import exerciseThree
+from ExerciseFour import exerciseFour
 
 def talk(IP, PORT):
     speechProxy = ALProxy("ALTextToSpeech", IP, PORT)
@@ -6,14 +10,24 @@ def talk(IP, PORT):
 
     print "finished"
 
-def first_exercise(IP, PORT):
-    postureProxy = ALProxy("ALRobotPosture", IP, PORT);
-    postureProxy.goToPosture("Sit",0.5);
+def stand_init(IP, PORT):
+    postureProxy = ALProxy("ALRobotPosture", IP, PORT)
+    postureProxy.goToPosture("StandInit",0.5)
+
+def sit(IP, PORT):
+    postureProxy = ALProxy("ALRobotPosture", IP, PORT)
+    postureProxy.goToPosture("Sit",0.5)
 
 def main():
-    IP = "192.168.0.108"
+    IP = "192.168.0.107"
     PORT = 9559
-    first_exercise(IP, PORT)
+    #stand_init(IP,PORT)
+    sit(IP, PORT)
+    #talk(IP,PORT)
+    #armsUpAndDown(IP)
+    #strechArms(IP)
+    #exerciseThree(IP)
+    #exerciseFour(IP)
 
 if __name__ == "__main__":
     main()

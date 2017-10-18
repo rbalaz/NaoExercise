@@ -32,21 +32,34 @@ def exerciseThree(robotIP):
 
     # Move with left hand
     JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll"]
-    Arm1 = [-65,  30, 0.5, -40]
+    Arm1 = [-15, 65, -70, -80]
     Arm1 = [ x * motion.TO_RAD for x in Arm1]
 
-    Arm2 = [-65,  70, 1, -80]
+    Arm2 = [-15, 10, -70, -80]
     Arm2 = [ x * motion.TO_RAD for x in Arm2]
 
-    pFractionMaxSpeed = 0.8
+    pFractionMaxSpeed = 0.4
 
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
+    #motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+    #motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
 
     # Move with right hand
     JointNames = ["RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll"]
-    Arm1 = [-65,  -30, -0.5, 40]
+    Arm1 = [-15, -65, 70, 80]
     Arm1 = [ x * motion.TO_RAD for x in Arm1]
 
-    Arm2 = [-65,  -70, -1, 80]
+    Arm2 = [-15, -10, 70, 80]
     Arm2 = [ x * motion.TO_RAD for x in Arm2]
+
+    #motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+    #motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
+
+    JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll"]
+    Arm1 = [-15, 65, -70, -80, -15, -65, 70, 80]
+    Arm1 = [x * motion.TO_RAD for x in Arm1]
+
+    Arm2 = [-15, 10, -70, -80, -15, -10, 70, 80]
+    Arm2 = [x * motion.TO_RAD for x in Arm2]
+
+    motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)

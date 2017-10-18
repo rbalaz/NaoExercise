@@ -2,6 +2,7 @@
 
 # Popis cviku: Nao pohybuje vystretymi rukami hore a dole
 import motion
+import time
 from naoqi import ALProxy
 
 
@@ -37,39 +38,31 @@ def armsUpAndDown(robotIP):
     #####################
     # Arms motion from user have always the priority than walk arms motion
     JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll"]
-    Arm1 = [-65,  30, 0, -40]
+    Arm1 = [-85,  30, 0, -40]
     Arm1 = [ x * motion.TO_RAD for x in Arm1]
 
-    Arm2 = [-65,  70, 0, -80]
+    Arm2 = [85,  30, 0, -40]
     Arm2 = [ x * motion.TO_RAD for x in Arm2]
 
-    Arm3 = [-65, 0, 0, -5]
-    Arm3 = [ x* motion.TO_RAD for x in Arm3]
-
-    pFractionMaxSpeed = 0.8
+    pFractionMaxSpeed = 0.5
 
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+    time.sleep(1.5)
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm3, pFractionMaxSpeed)
 
     #####################
     ## Arms User Motion
     #####################
     # Arms motion from user have always the priority than walk arms motion
     JointNames = ["RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll"]
-    Arm1 = [-65,  -30, 0, 40]
+    Arm1 = [-85,  -30, 0, 40]
     Arm1 = [ x * motion.TO_RAD for x in Arm1]
 
-    Arm2 = [-65,  -70, 0, 80]
+    Arm2 = [85,  -30, 0, 40]
     Arm2 = [ x * motion.TO_RAD for x in Arm2]
 
-    Arm3 = [-65, 0, 0, 5]
-    Arm3 = [ x* motion.TO_RAD for x in Arm3]
-
-    pFractionMaxSpeed = 0.8
+    pFractionMaxSpeed = 0.5
 
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+    time.sleep(1.5)
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm3, pFractionMaxSpeed)

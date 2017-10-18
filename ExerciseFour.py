@@ -31,15 +31,27 @@ def exerciseFour(robotIP):
     postureProxy.goToPosture("Sit", 0.5)
 
     # Stretching right leg
-    JointNames = ["RKneePitch","RAnklePitch","RAnkleRoll"]
-    Leg1 = [30, 0, 0]
-    Leg2 = [10, 0, 0]
+    JointNames1 = ["LShoulderRoll","RShoulderRoll"]
+    Leg1 = [60,-50]
+    Leg1 = [x * motion.TO_RAD for x in Leg1]
+    JointNames2 =["LElbowRoll","LShoulderPitch","RElbowRoll","RShoulderPitch"]
+    Leg2 = [-10,110,10,110]
+    Leg2 = [x * motion.TO_RAD for x in Leg2]
+    JointNames3= ["LShoulderRoll","RShoulderRoll"]
+    Leg3 = [25,-25]
+    Leg3 = [x * motion.TO_RAD for x in Leg3]
+    JointNames4= ["RKneePitch"]
+    Leg4 = [0]
+    Leg4 = [x * motion.TO_RAD for x in Leg4]
     # Missing neutral position -> need to read this from
 
-    pFractionMaxSpeed = 0.8
+    pFractionMaxSpeed = 0.4
 
-    motionProxy.angleInterpolationWithSpeed(JointNames, Leg1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Leg2, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames1, Leg1, pFractionMaxSpeed)
+    #postureProxy.goToPosture("Sit", 1)
+    motionProxy.angleInterpolationWithSpeed(JointNames2, Leg2, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames3, Leg3, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames4, Leg4, pFractionMaxSpeed)
 
     JointNames = ["LKneePitch","LAnklePitch","LAnkleRoll"]
     Leg1 = [30, 0, 0]
@@ -48,5 +60,5 @@ def exerciseFour(robotIP):
 
     pFractionMaxSpeed = 0.8
 
-    motionProxy.angleInterpolationWithSpeed(JointNames, Leg1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Leg2, pFractionMaxSpeed)
+    #motionProxy.angleInterpolationWithSpeed(JointNames, Leg1, pFractionMaxSpeed)
+    #motionProxy.angleInterpolationWithSpeed(JointNames, Leg2, pFractionMaxSpeed)
