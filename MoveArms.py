@@ -13,7 +13,7 @@ def StiffnessOn(proxy):
     pTimeLists = 1.0
     proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
-def armsUpAndDown(robotIP):
+def armsUpAndDown(robotIP, neutral):
     # Init proxies.
     try:
         motionProxy = ALProxy("ALMotion", robotIP, 9559)
@@ -33,36 +33,24 @@ def armsUpAndDown(robotIP):
     # Send NAO to Pose Init
     postureProxy.goToPosture("StandInit", 0.5)
 
-    #####################
-    ## Arms User Motion
-    #####################
-    # Arms motion from user have always the priority than walk arms motion
-    JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll"]
-    Arm1 = [-85,  30, 0, -40]
+    JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll","RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll"]
+    # Left hand up, right hand down
+    Arm1 = [-85, 30, 0, -40, 85, -30, 0, 40]
     Arm1 = [ x * motion.TO_RAD for x in Arm1]
 
-    Arm2 = [85,  30, 0, -40]
+    # Right hand up, left hand down
+    Arm2 = [85, 30, 0, -40, -85, -30, 0, 40]
     Arm2 = [ x * motion.TO_RAD for x in Arm2]
 
-    pFractionMaxSpeed = 0.5
+    # Both hands down, neutral position
+    Arm3 = [85, 30, 0, -40, 85, -30, 0, 40]
+    Arm3 = [ x * motion.TO_RAD for x in Arm3]
+
+    pFractionMaxSpeed = 0.4
 
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
-    time.sleep(1.5)
+    time.sleep(1.0)
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
-
-    #####################
-    ## Arms User Motion
-    #####################
-    # Arms motion from user have always the priority than walk arms motion
-    JointNames = ["RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll"]
-    Arm1 = [-85,  -30, 0, 40]
-    Arm1 = [ x * motion.TO_RAD for x in Arm1]
-
-    Arm2 = [85,  -30, 0, 40]
-    Arm2 = [ x * motion.TO_RAD for x in Arm2]
-
-    pFractionMaxSpeed = 0.5
-
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
-    time.sleep(1.5)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
+    if neutral == True:
+        time.sleep(1.0)
+        motionProxy.angleInterpolationWithSpeed(JointNames, Arm3, pFractionMaxSpeed)

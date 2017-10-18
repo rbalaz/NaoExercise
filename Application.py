@@ -12,22 +12,22 @@ def talk(IP, PORT):
 
 def stand_init(IP, PORT):
     postureProxy = ALProxy("ALRobotPosture", IP, PORT)
-    postureProxy.goToPosture("StandInit",0.5)
+    postureProxy.goToPosture("StandInit", 0.5)
 
 def sit(IP, PORT):
     postureProxy = ALProxy("ALRobotPosture", IP, PORT)
-    postureProxy.goToPosture("Sit",0.5)
+    postureProxy.goToPosture("Sit", 0.5)
 
 def main():
     IP = "192.168.0.107"
     PORT = 9559
     #stand_init(IP,PORT)
-    sit(IP, PORT)
+    #sit(IP, PORT)
     #talk(IP,PORT)
-    #armsUpAndDown(IP)
-    #strechArms(IP)
-    #exerciseThree(IP)
-    #exerciseFour(IP)
+    #armsUpAndDown(IP, True)
+    #strechArms(IP, True)
+    #exerciseThree(IP, True)
+    exerciseFour(IP, True)
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,5 @@
 import motion
+import time
 from naoqi import ALProxy
 
 # Nao striedavo rozpazuje a predpazuje obe ruky sucasne
@@ -10,7 +11,7 @@ def StiffnessOn(proxy):
     pTimeLists = 1.0
     proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
-def strechArms(robotIP):
+def strechArms(robotIP, neutral):
     # Init proxies.
     try:
         motionProxy = ALProxy("ALMotion", robotIP, 9559)
@@ -31,29 +32,22 @@ def strechArms(robotIP):
     postureProxy.goToPosture("StandInit", 0.5)
 
     # Move with left hand
-    JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw"]
+    JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "LWristYaw", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw"]
     # Predpazenie
-    Arm1 = [-10,  0, 0, -10, 0]
+    Arm1 = [-10,  0, 0, -10, 0, -10,  0, 0, 10, 0]
     Arm1 = [ x * motion.TO_RAD for x in Arm1]
     # Rozpazenie
-    Arm2 = [-70,  70, -45, -10, -75]
-    Arm2 = [ x * motion.TO_RAD for x in Arm1]
-
-    pFractionMaxSpeed = 0.5
-
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
-
-    # Move with right hand
-    JointNames = ["RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll", "RWristYaw"]
-    # Predpazenie
-    Arm1 = [-10,  0, 0, 10, 0]
-    Arm1 = [ x * motion.TO_RAD for x in Arm1]
-    # Rozpazenie
-    Arm2 = [-10,  70, 45, 10, 75]
+    Arm2 = [-70,  70, -45, -10, -35, -70, -70, 45, 10, 35]
     Arm2 = [ x * motion.TO_RAD for x in Arm2]
+    # Both hands down
+    Arm3 = [85, 30, 0, -40, 0, 85, -30, 0, 40, 0]
+    Arm3 = [ x * motion.TO_RAD for x in Arm3]
 
-    pFractionMaxSpeed = 0.5
+    pFractionMaxSpeed = 0.4
 
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+    time.sleep(1.0)
     motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
+    if neutral == True:
+        time.sleep(1.0)
+        motionProxy.angleInterpolationWithSpeed(JointNames, Arm3, pFractionMaxSpeed)

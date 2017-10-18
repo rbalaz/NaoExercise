@@ -10,7 +10,7 @@ def StiffnessOn(proxy):
     pTimeLists = 1.0
     proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
-def exerciseFour(robotIP):
+def exerciseFour(robotIP, neutral):
     # Init proxies.
     try:
         motionProxy = ALProxy("ALMotion", robotIP, 9559)
@@ -31,34 +31,38 @@ def exerciseFour(robotIP):
     postureProxy.goToPosture("Sit", 0.5)
 
     # Stretching right leg
-    JointNames1 = ["LShoulderRoll","RShoulderRoll"]
-    Leg1 = [60,-50]
+    JointNames1 = ["LShoulderRoll", "RShoulderRoll"]
+    Arm1 = [60, -50]
+    Arm1 = [x * motion.TO_RAD for x in Arm1]
+    JointNames2 =["LElbowRoll", "LShoulderPitch", "RElbowRoll", "RShoulderPitch"]
+    Arm2 = [-10, 110, 10, 110]
+    Arm2 = [x * motion.TO_RAD for x in Arm2]
+    JointNames3 = ["LShoulderRoll", "RShoulderRoll"]
+    Arm3 = [25, -25]
+    Arm3 = [x * motion.TO_RAD for x in Arm3]
+    JointNames4 = ["RKneePitch"]
+    Leg1 = [0]
     Leg1 = [x * motion.TO_RAD for x in Leg1]
-    JointNames2 =["LElbowRoll","LShoulderPitch","RElbowRoll","RShoulderPitch"]
-    Leg2 = [-10,110,10,110]
+    Leg2 = [40]
     Leg2 = [x * motion.TO_RAD for x in Leg2]
-    JointNames3= ["LShoulderRoll","RShoulderRoll"]
-    Leg3 = [25,-25]
+    Leg3 = [75]
     Leg3 = [x * motion.TO_RAD for x in Leg3]
-    JointNames4= ["RKneePitch"]
-    Leg4 = [0]
-    Leg4 = [x * motion.TO_RAD for x in Leg4]
-    # Missing neutral position -> need to read this from
+    JointNames5 = ["LKneePitch"]
 
     pFractionMaxSpeed = 0.4
 
-    motionProxy.angleInterpolationWithSpeed(JointNames1, Leg1, pFractionMaxSpeed)
-    #postureProxy.goToPosture("Sit", 1)
-    motionProxy.angleInterpolationWithSpeed(JointNames2, Leg2, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames3, Leg3, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames4, Leg4, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames1, Arm1, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames2, Arm2, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames3, Arm3, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames4, Leg1, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames4, Leg2, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames4, Leg3, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames5, Leg1, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames5, Leg2, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames5, Leg3, pFractionMaxSpeed)
 
-    JointNames = ["LKneePitch","LAnklePitch","LAnkleRoll"]
-    Leg1 = [30, 0, 0]
-    Leg2 = [10, 0, 0]
-    # Missing neutral position -> need to read this from
-
-    pFractionMaxSpeed = 0.8
-
-    #motionProxy.angleInterpolationWithSpeed(JointNames, Leg1, pFractionMaxSpeed)
-    #motionProxy.angleInterpolationWithSpeed(JointNames, Leg2, pFractionMaxSpeed)
+    if neutral == True:
+        motionProxy.angleInterpolationWithSpeed(JointNames3, Arm3, pFractionMaxSpeed)
+        motionProxy.angleInterpolationWithSpeed(JointNames2, Arm2, pFractionMaxSpeed)
+        motionProxy.angleInterpolationWithSpeed(JointNames1, Arm1, pFractionMaxSpeed)
+        postureProxy.goToPosture("Sit", 1)
