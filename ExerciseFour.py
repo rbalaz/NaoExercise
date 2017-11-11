@@ -4,76 +4,80 @@ from naoqi import ALProxy
 
 # Nao v sede vystiera jednu z noh
 
-def StiffnessOn(proxy):
-    # We use the "Body" name to signify the collection of all joints
-    pNames = "Body"
-    pStiffnessLists = 1.0
-    pTimeLists = 1.0
-    proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
-def exerciseFour(robotIP, neutral, repeats, left):
+def stiffness_on(proxy):
+    # We use the "Body" name to signify the collection of all joints
+    p_names = "Body"
+    p_stiffness_lists = 1.0
+    p_time_lists = 1.0
+    proxy.stiffnessInterpolation(p_names, p_stiffness_lists, p_time_lists)
+
+
+def exercise_four(robot_ip, neutral, repeats, left):
     # Init proxies.
     try:
-        motionProxy = ALProxy("ALMotion", robotIP, 9559)
+        motion_proxy = ALProxy("ALMotion", robot_ip, 9559)
     except Exception, e:
         print "Could not create proxy to ALMotion"
         print "Error was: ", e
+        return
 
     try:
-        postureProxy = ALProxy("ALRobotPosture", robotIP, 9559)
+        posture_proxy = ALProxy("ALRobotPosture", robot_ip, 9559)
     except Exception, e:
         print "Could not create proxy to ALRobotPosture"
         print "Error was: ", e
+        return
 
     # Set NAO in Stiffness On
-    StiffnessOn(motionProxy)
+    stiffness_on(motion_proxy)
 
     # Send NAO to Pose Init
-    postureProxy.goToPosture("Sit", 0.5)
+    posture_proxy.goToPosture("Sit", 0.5)
 
     # Stretching right leg
-    JointNames1 = ["LShoulderRoll", "RShoulderRoll"]
-    Arm1 = [60, -50]
-    Arm1 = [x * motion.TO_RAD for x in Arm1]
-    JointNames2 =["LElbowRoll", "LShoulderPitch", "RElbowRoll", "RShoulderPitch"]
-    Arm2 = [-10, 110, 10, 110]
-    Arm2 = [x * motion.TO_RAD for x in Arm2]
-    JointNames3 = ["LShoulderRoll", "RShoulderRoll"]
-    Arm3 = [25, -25]
-    Arm3 = [x * motion.TO_RAD for x in Arm3]
-    JointNames4 = ["RKneePitch"]
-    Leg1 = [0]
-    Leg1 = [x * motion.TO_RAD for x in Leg1]
-    Leg2 = [40]
-    Leg2 = [x * motion.TO_RAD for x in Leg2]
-    Leg3 = [75]
-    Leg3 = [x * motion.TO_RAD for x in Leg3]
-    JointNames5 = ["LKneePitch"]
+    joint_names1 = ["LShoulderRoll", "RShoulderRoll"]
+    arm1 = [60, -50]
+    arm1 = [x * motion.TO_RAD for x in arm1]
+    joint_names2 = ["LElbowRoll", "LShoulderPitch", "RElbowRoll", "RShoulderPitch"]
+    arm2 = [-10, 110, 10, 110]
+    arm2 = [x * motion.TO_RAD for x in arm2]
+    joint_names3 = ["LShoulderRoll", "RShoulderRoll"]
+    arm3 = [25, -25]
+    arm3 = [x * motion.TO_RAD for x in arm3]
+    joint_names4 = ["RKneePitch"]
+    leg1 = [0]
+    leg1 = [x * motion.TO_RAD for x in leg1]
+    leg2 = [40]
+    leg2 = [x * motion.TO_RAD for x in leg2]
+    leg3 = [75]
+    leg3 = [x * motion.TO_RAD for x in leg3]
+    joint_names5 = ["LKneePitch"]
 
-    pFractionMaxSpeedLegs = 0.4
-    pFractionMaxSpeedArms = 0.2
+    p_fraction_max_speed_legs = 0.4
+    p_fraction_max_speed_arms = 0.2
 
-    motionProxy.angleInterpolationWithSpeed(JointNames1, Arm1, pFractionMaxSpeedArms)
-    motionProxy.angleInterpolationWithSpeed(JointNames2, Arm2, pFractionMaxSpeedArms)
-    motionProxy.angleInterpolationWithSpeed(JointNames3, Arm3, pFractionMaxSpeedArms)
+    motion_proxy.angleInterpolationWithSpeed(joint_names1, arm1, p_fraction_max_speed_arms)
+    motion_proxy.angleInterpolationWithSpeed(joint_names2, arm2, p_fraction_max_speed_arms)
+    motion_proxy.angleInterpolationWithSpeed(joint_names3, arm3, p_fraction_max_speed_arms)
     for i in range(0, repeats):
         if not left:
-            motionProxy.angleInterpolationWithSpeed(JointNames4, Leg1, pFractionMaxSpeedLegs)
+            motion_proxy.angleInterpolationWithSpeed(joint_names4, leg1, p_fraction_max_speed_legs)
             time.sleep(1.0)
-            motionProxy.angleInterpolationWithSpeed(JointNames4, Leg2, pFractionMaxSpeedLegs)
+            motion_proxy.angleInterpolationWithSpeed(joint_names4, leg2, p_fraction_max_speed_legs)
             time.sleep(1.0)
-            motionProxy.angleInterpolationWithSpeed(JointNames4, Leg3, pFractionMaxSpeedLegs)
+            motion_proxy.angleInterpolationWithSpeed(joint_names4, leg3, p_fraction_max_speed_legs)
             time.sleep(1.0)
         else:
-            motionProxy.angleInterpolationWithSpeed(JointNames5, Leg1, pFractionMaxSpeedLegs)
+            motion_proxy.angleInterpolationWithSpeed(joint_names5, leg1, p_fraction_max_speed_legs)
             time.sleep(1.0)
-            motionProxy.angleInterpolationWithSpeed(JointNames5, Leg2, pFractionMaxSpeedLegs)
+            motion_proxy.angleInterpolationWithSpeed(joint_names5, leg2, p_fraction_max_speed_legs)
             time.sleep(1.0)
-            motionProxy.angleInterpolationWithSpeed(JointNames5, Leg3, pFractionMaxSpeedLegs)
+            motion_proxy.angleInterpolationWithSpeed(joint_names5, leg3, p_fraction_max_speed_legs)
             time.sleep(1.0)
 
         if neutral and i == repeats - 1:
-            motionProxy.angleInterpolationWithSpeed(JointNames3, Arm3, pFractionMaxSpeedArms)
-            motionProxy.angleInterpolationWithSpeed(JointNames2, Arm2, pFractionMaxSpeedArms)
-            motionProxy.angleInterpolationWithSpeed(JointNames1, Arm1, pFractionMaxSpeedArms)
-            postureProxy.goToPosture("Sit", 1)
+            motion_proxy.angleInterpolationWithSpeed(joint_names3, arm3, p_fraction_max_speed_arms)
+            motion_proxy.angleInterpolationWithSpeed(joint_names2, arm2, p_fraction_max_speed_arms)
+            motion_proxy.angleInterpolationWithSpeed(joint_names1, arm1, p_fraction_max_speed_arms)
+            posture_proxy.goToPosture("Sit", 1)

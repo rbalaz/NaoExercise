@@ -4,62 +4,67 @@ from naoqi import ALProxy
 
 # Nao dvihne ruku zohnutu v lakti a a pohybuje laktom smerom ku a od hlavy
 
-def StiffnessOn(proxy):
-    # We use the "Body" name to signify the collection of all joints
-    pNames = "Body"
-    pStiffnessLists = 1.0
-    pTimeLists = 1.0
-    proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
-def exerciseThree(robotIP, neutral, repeats):
+def stiffness_on(proxy):
+    # We use the "Body" name to signify the collection of all joints
+    p_names = "Body"
+    p_stiffness_lists = 1.0
+    p_time_lists = 1.0
+    proxy.stiffnessInterpolation(p_names, p_stiffness_lists, p_time_lists)
+
+
+def exercise_three(robot_ip, neutral, repeats):
     # Init proxies.
     try:
-        motionProxy = ALProxy("ALMotion", robotIP, 9559)
+        motion_proxy = ALProxy("ALMotion", robot_ip, 9559)
     except Exception, e:
         print "Could not create proxy to ALMotion"
         print "Error was: ", e
+        return
 
     try:
-        postureProxy = ALProxy("ALRobotPosture", robotIP, 9559)
+        posture_proxy = ALProxy("ALRobotPosture", robot_ip, 9559)
     except Exception, e:
         print "Could not create proxy to ALRobotPosture"
         print "Error was: ", e
+        return
 
     # Set NAO in Stiffness On
-    StiffnessOn(motionProxy)
+    stiffness_on(motion_proxy)
 
     # Send NAO to Pose Init
-    postureProxy.goToPosture("StandInit", 0.5)
+    posture_proxy.goToPosture("StandInit", 0.5)
 
-    JointNames = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "RShoulderPitch", "RShoulderRoll", "RElbowYaw", "RElbowRoll"]
+    joint_names = ["LShoulderPitch", "LShoulderRoll", "LElbowYaw", "LElbowRoll", "RShoulderPitch",
+                   "RShoulderRoll", "RElbowYaw", "RElbowRoll"]
     # Hands down at sides bent in elbow
-    Arm1 = [-15, 65, 70, -80, -15, -65, -70, 80]
-    Arm1 = [x * motion.TO_RAD for x in Arm1]
+    arm1 = [-15, 65, 70, -80, -15, -65, -70, 80]
+    arm1 = [x * motion.TO_RAD for x in arm1]
 
     # Hands up at sides bent in elbow
-    Arm2 = [-15, 65, -70, -80, -15, -65, 70, 80]
-    Arm2 = [x * motion.TO_RAD for x in Arm2]
+    arm2 = [-15, 65, -70, -80, -15, -65, 70, 80]
+    arm2 = [x * motion.TO_RAD for x in arm2]
 
     # Hands up at the front bent in elbow
-    Arm3 = [-15, 10, -70, -80, -15, -10, 70, 80]
-    Arm3 = [x * motion.TO_RAD for x in Arm3]
+    arm3 = [-15, 10, -70, -80, -15, -10, 70, 80]
+    arm3 = [x * motion.TO_RAD for x in arm3]
 
     # Both hands down, neutral position
-    Arm4 = [85, 30, 0, -40, 85, -30, 0, 40]
-    Arm4 = [ x * motion.TO_RAD for x in Arm4]
+    arm4 = [85, 30, 0, -40, 85, -30, 0, 40]
+    arm4 = [x * motion.TO_RAD for x in arm4]
 
-    pFractionMaxSpeed = 0.4
+    p_fraction_max_speed = 0.4
 
     for i in range(0, repeats):
-        motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+        motion_proxy.angleInterpolationWithSpeed(joint_names, arm1, p_fraction_max_speed)
         time.sleep(1.0)
-        motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
+        motion_proxy.angleInterpolationWithSpeed(joint_names, arm2, p_fraction_max_speed)
         time.sleep(1.0)
-        motionProxy.angleInterpolationWithSpeed(JointNames, Arm3, pFractionMaxSpeed)
+        motion_proxy.angleInterpolationWithSpeed(joint_names, arm3, p_fraction_max_speed)
         time.sleep(1.0)
-        motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
+        motion_proxy.angleInterpolationWithSpeed(joint_names, arm2, p_fraction_max_speed)
         time.sleep(1.0)
-        motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+        motion_proxy.angleInterpolationWithSpeed(joint_names, arm1, p_fraction_max_speed)
         time.sleep(1.0)
         if neutral and i == repeats - 1:
-            motionProxy.angleInterpolationWithSpeed(JointNames, Arm4, pFractionMaxSpeed)
+            motion_proxy.angleInterpolationWithSpeed(joint_names, arm4, p_fraction_max_speed)

@@ -1,13 +1,13 @@
 import time
 from naoqi import ALProxy
-from MoveArms import armsUpAndDown
-from StretchArms import stretchArms
-from ExerciseThree import exerciseThree
-from ExerciseFour import exerciseFour
+from MoveArms import arms_up_and_down
+from StretchArms import stretch_arms
+from ExerciseThree import exercise_three
+from ExerciseFour import exercise_four
 
 
-def main(IP, PORT):
-    speech_proxy = ALProxy("ALTextToSpeech", IP, PORT)
+def main(ip, port):
+    speech_proxy = ALProxy("ALTextToSpeech", ip, port)
     introduction_part1 = "Hello, I'm Chris and I'm your personal coach."
     introduction_part2 = "I will show you several exercises to help you stretch your hands, legs and body in general."
     introduction_part3 = "Before every exercise, I will describe it and demonstrate how to do it. You will only " \
@@ -36,19 +36,19 @@ def main(IP, PORT):
     speech_proxy.say(introduction_part3)
     # Exercising
     # First exercise
-    stand_init(IP, PORT)
+    stand_init(ip, port)
     exercise_finished = False
     subject_successfully_repeats = False
-    while exercise_finished == False:
+    while not exercise_finished:
         speech_proxy.say(first_exercise)
-        while subject_successfully_repeats == False:
-            armsUpAndDown(IP, True, 1)
+        while not subject_successfully_repeats:
+            arms_up_and_down(ip, True, 1)
             speech_proxy.say(exercise_prompt)
-            subject_successfully_repeats = kinectConfirmation()
-            if subject_successfully_repeats == False:
+            subject_successfully_repeats = kinect_confirmation()
+            if not subject_successfully_repeats:
                 speech_proxy.say(denial_message)
         speech_proxy.say(confirmation_message5)
-        armsUpAndDown(IP, True, 5)
+        arms_up_and_down(ip, True, 5)
         exercise_finished = True
 
     # Second exercise
@@ -57,13 +57,13 @@ def main(IP, PORT):
     while not exercise_finished:
         speech_proxy.say(second_exercise)
         while not subject_successfully_repeats:
-            stretchArms(IP, True, 1)
+            stretch_arms(ip, True, 1)
             speech_proxy.say(exercise_prompt)
-            subject_successfully_repeats = kinectConfirmation()
+            subject_successfully_repeats = kinect_confirmation()
             if not subject_successfully_repeats:
                 speech_proxy.say(denial_message)
         speech_proxy.say(confirmation_message5)
-        stretchArms(IP, True, 5)
+        stretch_arms(ip, True, 5)
         exercise_finished = True
 
     # Third exercise
@@ -72,56 +72,58 @@ def main(IP, PORT):
     while not exercise_finished:
         speech_proxy.say(third_exercise)
         while not subject_successfully_repeats:
-            exerciseThree(IP, True, 1)
+            exercise_three(ip, True, 1)
             speech_proxy.say(exercise_prompt)
-            subject_successfully_repeats = kinectConfirmation()
+            subject_successfully_repeats = kinect_confirmation()
             if not subject_successfully_repeats:
                 speech_proxy.say(denial_message)
         speech_proxy.say(confirmation_message3)
-        exerciseThree(IP, True, 3)
+        exercise_three(ip, True, 3)
         exercise_finished = True
 
     # Fourth exercise
-    sit(IP, PORT)
+    sit(ip, port)
     exercise_finished = False
     subject_successfully_repeats = False
     while not exercise_finished:
         speech_proxy.say(fourth_exercise_part1)
         while not subject_successfully_repeats:
-            exerciseFour(IP, True, 1, False)
+            exercise_four(ip, True, 1, False)
             speech_proxy.say(exercise_prompt)
-            subject_successfully_repeats = kinectConfirmation()
+            subject_successfully_repeats = kinect_confirmation()
             if not subject_successfully_repeats:
                 speech_proxy.say(denial_message)
         speech_proxy.say(confirmation_message5)
-        exerciseFour(IP, True, 5, False)
+        exercise_four(ip, True, 5, False)
         subject_successfully_repeats = False
         speech_proxy.say(fourth_exercise_part2)
         while not subject_successfully_repeats:
-            exerciseFour(IP, True, 1, True)
+            exercise_four(ip, True, 1, True)
             speech_proxy.say(exercise_prompt)
-            subject_successfully_repeats = kinectConfirmation()
+            subject_successfully_repeats = kinect_confirmation()
             if not subject_successfully_repeats:
                 speech_proxy.say(denial_message)
         speech_proxy.say(confirmation_message5)
-        exerciseFour(IP, True, 5, True)
+        exercise_four(ip, True, 5, True)
         exercise_finished = True
 
 
-def kinectConfirmation():
+def kinect_confirmation():
     time.sleep(1.0)
     return True
 
 
-def stand_init(IP, PORT):
-    postureProxy = ALProxy("ALRobotPosture", IP, PORT)
-    postureProxy.goToPosture("StandInit", 0.75)
+def stand_init(ip, port):
+    posture_proxy = ALProxy("ALRobotPosture", ip, port)
+    posture_proxy.goToPosture("StandInit", 0.75)
 
-def sit(IP, PORT):
-    postureProxy = ALProxy("ALRobotPosture", IP, PORT)
-    postureProxy.goToPosture("Sit", 0.5)
+
+def sit(ip, port):
+    posture_proxy = ALProxy("ALRobotPosture", ip, port)
+    posture_proxy.goToPosture("Sit", 0.5)
+
 
 if __name__ == "__main__":
-    IP = "192.168.0.101"
-    PORT = 9559
-    main(IP, PORT)
+    robot_ip = "192.168.0.101"
+    com_port = 9559
+    main(robot_ip, com_port)

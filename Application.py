@@ -1,9 +1,9 @@
 from naoqi import ALProxy
 import sys
 import subprocess
-from MoveArms import armsUpAndDown
-from StretchArms import stretchArms
-from ExerciseThree import exerciseThree
+from MoveArms import arms_up_and_down
+from StretchArms import stretch_arms
+from ExerciseThree import exercise_three
 from ExerciseFour import exerciseFour
 
 def get_IP():
@@ -74,10 +74,10 @@ def main():
     IP = "192.168.0.101"
     PORT = 9559
     #stand_init(IP,PORT)
-    #sit(IP, PORT)
+    sit(IP, PORT)
     #talk(IP,PORT)
     #armsUpAndDown(IP, True)
-    #strechArms(IP, False)
+    #stretch_arms(IP, False, 1)
     #exerciseThree(IP, True)
     #exerciseFour(IP, True)
     #eyeLEDs(IP, PORT)
