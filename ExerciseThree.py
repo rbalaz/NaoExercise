@@ -11,7 +11,7 @@ def StiffnessOn(proxy):
     pTimeLists = 1.0
     proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
-def exerciseThree(robotIP, neutral):
+def exerciseThree(robotIP, neutral, repeats):
     # Init proxies.
     try:
         motionProxy = ALProxy("ALMotion", robotIP, 9559)
@@ -50,12 +50,16 @@ def exerciseThree(robotIP, neutral):
 
     pFractionMaxSpeed = 0.4
 
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
-    time.sleep(1.0)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
-    time.sleep(1.0)
-    motionProxy.angleInterpolationWithSpeed(JointNames, Arm3, pFractionMaxSpeed)
-
-    if neutral == True:
+    for i in range(0, repeats):
+        motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
         time.sleep(1.0)
-        motionProxy.angleInterpolationWithSpeed(JointNames, Arm4, pFractionMaxSpeed)
+        motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
+        time.sleep(1.0)
+        motionProxy.angleInterpolationWithSpeed(JointNames, Arm3, pFractionMaxSpeed)
+        time.sleep(1.0)
+        motionProxy.angleInterpolationWithSpeed(JointNames, Arm2, pFractionMaxSpeed)
+        time.sleep(1.0)
+        motionProxy.angleInterpolationWithSpeed(JointNames, Arm1, pFractionMaxSpeed)
+        time.sleep(1.0)
+        if neutral and i == repeats - 1:
+            motionProxy.angleInterpolationWithSpeed(JointNames, Arm4, pFractionMaxSpeed)

@@ -1,4 +1,5 @@
 import motion
+import time
 from naoqi import ALProxy
 
 # Nao v sede vystiera jednu z noh
@@ -10,7 +11,7 @@ def StiffnessOn(proxy):
     pTimeLists = 1.0
     proxy.stiffnessInterpolation(pNames, pStiffnessLists, pTimeLists)
 
-def exerciseFour(robotIP, neutral):
+def exerciseFour(robotIP, neutral, repeats, left):
     # Init proxies.
     try:
         motionProxy = ALProxy("ALMotion", robotIP, 9559)
@@ -49,20 +50,30 @@ def exerciseFour(robotIP, neutral):
     Leg3 = [x * motion.TO_RAD for x in Leg3]
     JointNames5 = ["LKneePitch"]
 
-    pFractionMaxSpeed = 0.4
+    pFractionMaxSpeedLegs = 0.4
+    pFractionMaxSpeedArms = 0.2
 
-    motionProxy.angleInterpolationWithSpeed(JointNames1, Arm1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames2, Arm2, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames3, Arm3, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames4, Leg1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames4, Leg2, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames4, Leg3, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames5, Leg1, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames5, Leg2, pFractionMaxSpeed)
-    motionProxy.angleInterpolationWithSpeed(JointNames5, Leg3, pFractionMaxSpeed)
+    motionProxy.angleInterpolationWithSpeed(JointNames1, Arm1, pFractionMaxSpeedArms)
+    motionProxy.angleInterpolationWithSpeed(JointNames2, Arm2, pFractionMaxSpeedArms)
+    motionProxy.angleInterpolationWithSpeed(JointNames3, Arm3, pFractionMaxSpeedArms)
+    for i in range(0, repeats):
+        if not left:
+            motionProxy.angleInterpolationWithSpeed(JointNames4, Leg1, pFractionMaxSpeedLegs)
+            time.sleep(1.0)
+            motionProxy.angleInterpolationWithSpeed(JointNames4, Leg2, pFractionMaxSpeedLegs)
+            time.sleep(1.0)
+            motionProxy.angleInterpolationWithSpeed(JointNames4, Leg3, pFractionMaxSpeedLegs)
+            time.sleep(1.0)
+        else:
+            motionProxy.angleInterpolationWithSpeed(JointNames5, Leg1, pFractionMaxSpeedLegs)
+            time.sleep(1.0)
+            motionProxy.angleInterpolationWithSpeed(JointNames5, Leg2, pFractionMaxSpeedLegs)
+            time.sleep(1.0)
+            motionProxy.angleInterpolationWithSpeed(JointNames5, Leg3, pFractionMaxSpeedLegs)
+            time.sleep(1.0)
 
-    if neutral == True:
-        motionProxy.angleInterpolationWithSpeed(JointNames3, Arm3, pFractionMaxSpeed)
-        motionProxy.angleInterpolationWithSpeed(JointNames2, Arm2, pFractionMaxSpeed)
-        motionProxy.angleInterpolationWithSpeed(JointNames1, Arm1, pFractionMaxSpeed)
-        postureProxy.goToPosture("Sit", 1)
+        if neutral and i == repeats - 1:
+            motionProxy.angleInterpolationWithSpeed(JointNames3, Arm3, pFractionMaxSpeedArms)
+            motionProxy.angleInterpolationWithSpeed(JointNames2, Arm2, pFractionMaxSpeedArms)
+            motionProxy.angleInterpolationWithSpeed(JointNames1, Arm1, pFractionMaxSpeedArms)
+            postureProxy.goToPosture("Sit", 1)
